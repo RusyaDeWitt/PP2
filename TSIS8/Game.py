@@ -16,12 +16,14 @@ RED   = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+YELLOW = (255, 255, 0)
 
 #Other Variables for use in the program
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
 SPEED = 5
 SCORE = 0
+COINS = 0
 
 #Setting up Fonts
 font = pygame.font.SysFont("Verdana", 60)
@@ -54,6 +56,22 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
 
 
+class Coin(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("coin.png")
+        self.surf = pygame.Surface((42, 70))
+        self.rect = self.surf.get_rect(center=(random.randint(40, SCREEN_WIDTH - 40)
+                                               , 2))
+
+    def move(self):
+        global COINS
+        self.rect.move_ip(0, SPEED)
+        if (self.rect.bottom > 600):
+            self.rect.top = 0
+            self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
@@ -79,13 +97,17 @@ class Player(pygame.sprite.Sprite):
 #Setting up Sprites        
 P1 = Player()
 E1 = Enemy()
+C1 = Coin()
 
 #Creating Sprites Groups
 enemies = pygame.sprite.Group()
 enemies.add(E1)
+coins = pygame.sprite.Group()
+coins.add(C1)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(P1)
 all_sprites.add(E1)
+all_sprites.add(C1)
 
 #Adding a new User event 
 INC_SPEED = pygame.USEREVENT + 1
@@ -96,8 +118,6 @@ while True:
       
     #Cycles through all events occuring  
     for event in pygame.event.get():
-        if event.type == INC_SPEED:
-              SPEED += 0.5      
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
@@ -108,12 +128,18 @@ while True:
     scores = font_small.render(str(SCORE), True, BLACK)
     DISPLAYSURF.blit(scores, (10,10))
 
+    coin = font_small.render(str(COINS), True, YELLOW)
+    DISPLAYSURF.blit(coin, (370, 10))
+
     #Moves and Re-draws all Sprites
     for entity in all_sprites:
         DISPLAYSURF.blit(entity.image, entity.rect)
         entity.move()
 
     #To be run if collision occurs between Player and Enemy
+    if pygame.sprite.spritecollideany(P1, coins):
+        COINS += 1
+
     if pygame.sprite.spritecollideany(P1, enemies):
           pygame.mixer.Sound('crash.wav').play()
           time.sleep(1)
@@ -126,8 +152,11 @@ while True:
                 entity.kill() 
           time.sleep(2)
           pygame.quit()
-          sys.exit()        
-        
+          sys.exit()
+
+
+
+
     pygame.display.update()
     FramePerSec.tick(FPS)
     

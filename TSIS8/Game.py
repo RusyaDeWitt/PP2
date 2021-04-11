@@ -67,6 +67,11 @@ class Coin(pygame.sprite.Sprite):
     def move(self):
         global COINS
         self.rect.move_ip(0, SPEED)
+        if pygame.sprite.spritecollideany(P1, coins):
+            COINS += 1
+            self.rect.top = 0
+            self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
+
         if (self.rect.bottom > 600):
             self.rect.top = 0
             self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
@@ -137,9 +142,6 @@ while True:
         entity.move()
 
     #To be run if collision occurs between Player and Enemy
-    if pygame.sprite.spritecollideany(P1, coins):
-        COINS += 1
-
     if pygame.sprite.spritecollideany(P1, enemies):
           pygame.mixer.Sound('crash.wav').play()
           time.sleep(1)

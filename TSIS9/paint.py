@@ -1,4 +1,6 @@
 import pygame
+import pickle
+import os
 
 pygame.init()
 
@@ -34,6 +36,9 @@ def Eraser(surface, x,y):
 
 while True:
     for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.image.save(surface, 'picture.jpeg')
+            pygame.quit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_n:
                 currentTool = (currentTool + 1) % toolCount
@@ -61,4 +66,5 @@ while True:
             color = (0, 0, 255)
         elif currentColor == 2:
             color = (255, 0, 0)
+
         pygame.display.flip()

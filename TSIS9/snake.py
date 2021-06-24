@@ -119,12 +119,12 @@ def gameLoop():
                 elif event.key == pygame.K_s:
                     y2_change = snake_block
                     x2_change = 0
-        if x1 >= dis_width or x1 < 0 or y1 >= dis_height or y1 < 0:         #3 LEVEL
+        if x1 >= dis_width or x1 < 0 or y1 >= dis_height or y1 < 0:         #1LEVEL
             game_close = True
         if x2 >= dis_width or x2 < 0 or y2 >= dis_height or y2 < 0:
             game_close = True
-        if Length_of_first_snake - 1 == 5 or Length_of_second_snake - 1 == 5:       #2 LEVEL
-            if x1 >= dis_width-20 or x1 < 0 or y1 >= dis_height-200 or y1 < 0:
+        if Length_of_first_snake - 1 == 5 or Length_of_second_snake - 1 % 5 == 5:       #2 LEVEL
+            if x1 >= dis_width-20 or x1 < 0 or y1 >= dis_height-20 or y1 < 0:
                 game_close = True
             if x2 >= dis_width-20 or x2 < 0 or y2 >= dis_height-20 or y2 < 0:
                 game_close = True

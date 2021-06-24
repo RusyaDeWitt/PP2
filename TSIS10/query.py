@@ -8,7 +8,7 @@ def get_vendors():
         params = config()
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
-        cur.execute("SELECT vendor_id, vendor_name FROM vendors ORDER BY vendor_name")
+        cur.execute("SELECT vendor_id, vendor_name FROM vendors WHERE vendor_id > 3")
         print("The number of parts: ", cur.rowcount)
         row = cur.fetchone()
 
